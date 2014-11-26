@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
 		}
 
 		Dictionary dictionary(word_length);
-		dictionary.load_words();
-		dictionary.shortest_path(word1, word2);
+		dictionary.load_words(word1, word2);
+		dictionary.shortest_path();
         }
 
 	return 0;
