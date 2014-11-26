@@ -1,0 +1,5 @@
+Trying to create a program in C++ that will tell you the shortest path between
+two words by only changing one letter at a time. All intermediate words must be
+valid words as well.
+
+Ex: new -> net -> get -> git
