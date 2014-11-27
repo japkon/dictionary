@@ -19,6 +19,7 @@ using namespace std;
 struct Word_Node {
 	string word;
 	int distance;
+	bool visited;
 	Word_Node *prev;
 	vector<Word_Node *> node_list;
 };	

@@ -59,6 +59,7 @@ void Dictionary::make_node(string word)
 	Word_Node *new_node = new Word_Node;
 	new_node->word = word;
 	new_node->distance = -1;
+	new_node->visited = false;
 	new_node->prev = NULL;
 	all_words.push_back(new_node);
 	
@@ -96,17 +97,22 @@ void Dictionary::process_neighbors(Word_Node *node)
 {
 	Word_Node *neighbor;
 	size_t num_neighbors = (node->node_list).size();
+	node->visited = true;
 	for (size_t i = 0; i < num_neighbors; i++) {
 		neighbor = (node->node_list)[i];
 		if (neighbor->distance == -1) {
 			neighbor->distance = node->distance + 1;
 			neighbor->prev = node;
-			process_neighbors(neighbor);
-		} /*else if (neighbor->distance < node->distance + 1) {
+			if (!(neighbor->visited)) {
+				process_neighbors(neighbor);
+			}
+		} else if (neighbor->distance > node->distance + 1) {
 			neighbor->distance = node->distance + 1;
 			neighbor->prev = node;
-			process_neighbors(neighbor);
-		}*/
+			if (!(neighbor->visited)) {
+				process_neighbors(neighbor);
+			}
+		}
 	}
 }
 
@@ -115,9 +121,13 @@ void Dictionary::print_shortest()
 	Word_Node *final = all_words[index_word2];
 	if (final->prev == NULL) {
 		cout << "Can't get between words\n";
+		return;
 	} else {
 		while (final != NULL) {
-			cout << final->word << " -> ";
+			cout << final->word;
+			if (final->prev != NULL) {
+				cout << " -> ";
+			}
 			final = final->prev;
 		}
 	}
