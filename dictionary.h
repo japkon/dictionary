@@ -18,6 +18,8 @@ using namespace std;
 
 struct Word_Node {
 	string word;
+	int distance;
+	Word_Node *prev;
 	vector<Word_Node *> node_list;
 };	
 
@@ -34,7 +36,8 @@ private:
 	void make_node(string word);
         void add_word_to_graph(Word_Node *word);
 	bool similar_words(Word_Node *node1, Word_Node *node2);
-        void print_shortest();
+        void process_neighbors(Word_Node *node);
+	void print_shortest();
 };
 
 #endif

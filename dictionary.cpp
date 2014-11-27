@@ -36,27 +36,12 @@ void Dictionary::load_words(string word1, string word2)
 
 void Dictionary::shortest_path()
 {
-	Word_Node *node;
-	Word_Node *node2;
-	size_t length;
+	Word_Node *start = all_words[index_word1];
+	start->distance = 0;
 
-	node = all_words[index_word1];
-	cout << "WORD 1: " << node->word << endl;
-	length = (node->node_list).size();
-	for (size_t i = 0; i < length; i++) {
-		node2 = (node->node_list)[i];
-		cout << node2->word << endl;
-	}
+	process_neighbors(start);
 
-	cout << endl;
-
-	node = all_words[index_word2];
-	cout << "WORD 2: " << node->word << endl;
-	length = (node->node_list).size();
-	for (size_t i = 0; i < length; i++) {
-		node2 = (node->node_list)[i];
-		cout << node2->word << endl;
-	}
+	print_shortest();
 }
 
 Dictionary::~Dictionary()
@@ -73,6 +58,8 @@ void Dictionary::make_node(string word)
 {
 	Word_Node *new_node = new Word_Node;
 	new_node->word = word;
+	new_node->distance = -1;
+	new_node->prev = NULL;
 	all_words.push_back(new_node);
 	
 	add_word_to_graph(new_node);
@@ -101,6 +88,38 @@ bool Dictionary::similar_words(Word_Node *node1, Word_Node *node2)
 		} 
 	}
 
-	if (misses < 2) return true;
+	if (misses == 1) return true;
 	else return false;
+}
+
+void Dictionary::process_neighbors(Word_Node *node)
+{
+	Word_Node *neighbor;
+	size_t num_neighbors = (node->node_list).size();
+	for (size_t i = 0; i < num_neighbors; i++) {
+		neighbor = (node->node_list)[i];
+		if (neighbor->distance == -1) {
+			neighbor->distance = node->distance + 1;
+			neighbor->prev = node;
+			process_neighbors(neighbor);
+		} /*else if (neighbor->distance < node->distance + 1) {
+			neighbor->distance = node->distance + 1;
+			neighbor->prev = node;
+			process_neighbors(neighbor);
+		}*/
+	}
+}
+
+void Dictionary::print_shortest()
+{
+	Word_Node *final = all_words[index_word2];
+	if (final->prev == NULL) {
+		cout << "Can't get between words\n";
+	} else {
+		while (final != NULL) {
+			cout << final->word << " -> ";
+			final = final->prev;
+		}
+	}
+	cout << endl;
 }

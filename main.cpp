@@ -15,6 +15,10 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 
+		if (word1 == word2) {
+			cerr << "You input the same word twice\n";
+		}
+
 		Dictionary dictionary(word_length);
 		dictionary.load_words(word1, word2);
 		dictionary.shortest_path();
