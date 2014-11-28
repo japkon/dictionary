@@ -1,10 +1,13 @@
-//
-//  dictionary.h
-//  
-//
-//  Created by Jacob Apkon on 11/26/14.
-//
-//
+/*
+ *  dictionary.h
+ *  
+ *  by Jacob Apkon
+ *  Header file for the Dictionary class. The Dictionary Class takes 2 words as
+ * input, and finds the shortest path between the two words by changing one
+ * letter at a time. Every time a letter is changed, the resulting word must
+ * also be a valid word in the dictionary. The shortest path between the two
+ * words is printed.   
+ */
 
 #ifndef _dictionary_h
 #define _dictionary_h

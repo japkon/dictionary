@@ -1,19 +1,21 @@
-//
-//  dictionary.cpp
-//  
-//
-//  Created by Jacob Apkon on 11/26/14.
-//  Implements dictionary.h
-//
+/*
+ *  dictionary.cpp
+ * 
+ *  by Jacob Apkon
+ *  Implements the Dictionary class. Uses Dijkstra's Algorithm for path finding 
+ */
 
 #include "dictionary.h"
 #include <fstream>
 
 Dictionary::Dictionary(size_t length)
 {
+	/* Only the word length needs to be set for the class */
 	word_length = length;
 }
 
+/* Open the file of words. Only process a word if it's the right number of
+ * letters */
 void Dictionary::load_words(string word1, string word2)
 {
 	string word;
@@ -34,6 +36,7 @@ void Dictionary::load_words(string word1, string word2)
 	}
 }
 
+/* Start the path finding at the correct graph vertex */
 void Dictionary::shortest_path()
 {
 	Word_Node *start = all_words[index_word1];
@@ -44,6 +47,7 @@ void Dictionary::shortest_path()
 	print_shortest();
 }
 
+/* Destructor for the Dictionary class. Delete all nodes */
 Dictionary::~Dictionary()
 {
 	Word_Node *node;
@@ -65,6 +69,8 @@ void Dictionary::make_node(string word)
 	add_word_to_graph(new_node);
 }
 
+/* If two words only differe by one letter, add each word to the others
+ * list of connected words */
 void Dictionary::add_word_to_graph(Word_Node *word)
 {
 	size_t vector_length = all_words.size();
@@ -78,6 +84,7 @@ void Dictionary::add_word_to_graph(Word_Node *word)
 	}
 }
 
+/* Checks that words only differ by one letter */
 bool Dictionary::similar_words(Word_Node *node1, Word_Node *node2)
 {
 	size_t str_length = (node1->word).length();
@@ -92,6 +99,7 @@ bool Dictionary::similar_words(Word_Node *node1, Word_Node *node2)
 	else return false;
 }
 
+/* Dijkstra's Algorithm for finding the shortest path */
 void Dictionary::process_neighbors(Word_Node *node)
 {
 	Word_Node *neighbor;
@@ -110,10 +118,12 @@ void Dictionary::process_neighbors(Word_Node *node)
 	}
 }
 
+/* Iterate through the linked list to print the connecting words */
 void Dictionary::print_shortest()
 {
 	Word_Node *final = all_words[index_word2];
 	if (final->prev == NULL) {
+		/* The final vertex was never reached when path finding */
 		cout << "Can't get between words\n";
 		return;
 	} else {
